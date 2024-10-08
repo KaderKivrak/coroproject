@@ -1,0 +1,29 @@
+datasource db {
+  provider = "sqlite" // Skift fra "postgresql" til "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  email    String   @unique
+  password String
+  role     String   @default("user") // user, admin
+  uploads  Upload[]
+}
+
+model Upload {
+  id          Int      @id @default(autoincrement())
+  fileName    String
+  name        String
+  description String
+  company     String
+  status      String   @default("pending")
+  feedback    String?  // Optional feedback field
+  createdAt   DateTime @default(now())
+  userId      Int
+  user        User     @relation(fields: [userId], references: [id])
+}
