@@ -2,6 +2,8 @@
 
 import { useState } from 'react';
 import React from 'react';
+import { notFound } from 'next/navigation';
+import { getSession, useSession } from 'next-auth/react';
 
 interface Upload {
   name: string;
@@ -17,7 +19,7 @@ export default function AdminPanelClient({ uploads: initialUploads }: { uploads:
   const [message, setMessage] = useState(''); // Til bekræftelse
   const [feedback, setFeedback] = useState(''); // Feedback-tilstand
   const [currentId, setCurrentId] = useState(1);
-
+  const {data: session} = useSession();
   const handleStatusChange = async (id: number, newStatus: string) => {
     setMessage(''); // Nulstil beskeden før handling
 
@@ -46,6 +48,8 @@ export default function AdminPanelClient({ uploads: initialUploads }: { uploads:
 
   return (
     <div>
+      {session?.user.role === "admin" ? (
+    <div>
       {message && <p style={{ color: 'green' }}>{message}</p>}
       <ul>
         {uploads.length === 0 ? (
@@ -54,6 +58,7 @@ export default function AdminPanelClient({ uploads: initialUploads }: { uploads:
           uploads.map((upload) => (
             <li key={upload.id}>
               <p>
+              <h1>Admin Panel - Pending Uploads</h1>
               <strong>Name:</strong> {upload.name}<br />
                 <strong>File Name:</strong> {upload.fileName}<br />
                 <strong>Description:</strong> {upload.description}<br />
@@ -75,6 +80,8 @@ export default function AdminPanelClient({ uploads: initialUploads }: { uploads:
           ))
         )}
       </ul>
+    </div>
+      ): notFound()}
     </div>
   );
 }
