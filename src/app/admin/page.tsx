@@ -13,7 +13,6 @@ export default async function AdminUploads() {
     <div>
       <Navbar/>
       <h1>Admin Panel - Pending Uploads</h1>
-      {/* Send upload-dataen til klientkomponenten for at håndtere statusændringer */}
       <AdminPanelClient uploads={uploads} />
     </div>
   );
