@@ -1,6 +1,6 @@
 import { prisma } from '../../lib/prisma';
 import { Navbar } from '../component/navbar';
-import AdminPanelClient from './AdminPanelClient'; // Klient-side komponent
+import AdminPanelClient from './AdminPanelClient';
 
 
 export default async function AdminUploads() {

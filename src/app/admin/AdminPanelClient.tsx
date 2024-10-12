@@ -3,8 +3,9 @@
 import { useState } from 'react';
 import React from 'react';
 import { notFound } from 'next/navigation';
-import { getSession, useSession } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
+//upload felt
 interface Upload {
   name: string;
   id: number;
@@ -16,16 +17,16 @@ interface Upload {
 
 export default function AdminPanelClient({ uploads: initialUploads }: { uploads: Upload[] }) {
   const [uploads, setUploads] = useState(initialUploads);
-  const [message, setMessage] = useState(''); // Til bekræftelse
-  const [feedback, setFeedback] = useState(''); // Feedback-tilstand
-  const [currentId, setCurrentId] = useState(1);
+  const [message, setMessage] = useState('');
+  const [feedbacks, setFeedbacks] = useState<{ [id: number]: string }>({});
   const {data: session} = useSession();
   const handleStatusChange = async (id: number, newStatus: string) => {
-    setMessage(''); // Nulstil beskeden før handling
+    setMessage('');
 
+    //opdater status
     const res = await fetch(`/api/admin/update-upload-status`, {
       method: 'POST',
-      body: JSON.stringify({ id, status: newStatus, feedback }), // Send feedback sammen med status
+      body: JSON.stringify({ id, status: newStatus, feedback: feedbacks[id] }),
       headers: {
         'Content-Type': 'application/json',
       },
@@ -34,14 +35,15 @@ export default function AdminPanelClient({ uploads: initialUploads }: { uploads:
     if (res.ok) {
       setUploads((prevUploads) =>
         prevUploads.map((upload) =>
-          upload.id === id ? { ...upload, status: newStatus, feedback } : upload
+          upload.id === id ? { ...upload, status: newStatus, feedbacks } : upload
         )
       );
-      // Vis en bekræftelsesbesked
-      setMessage(`Upload status updated to ${newStatus}.`);
-      setFeedback(''); // Nulstil feedback
+
+      //besked
+      setMessage(`Status opdateret ${newStatus}.`);
+      setFeedbacks('');
     } else {
-      setMessage('Failed to update upload status.');
+      setMessage('Status kan ikke opdateres');
     }
   };
 
@@ -65,10 +67,16 @@ export default function AdminPanelClient({ uploads: initialUploads }: { uploads:
                 {upload.status === 'pending' && (
                   <>
                     <textarea
-                      placeholder="Enter feedback"
-                      value={feedback}
-                      onChange={(e) => setFeedback(e.target.value)}
+                     placeholder="Enter feedback"
+                     value={feedbacks[upload.id] || ''}
+                     onChange={(e) =>
+                      setFeedbacks((prevFeedbacks) => ({
+                       ...prevFeedbacks,
+                       [upload.id]: e.target.value,
+                      }))
+                     }
                     ></textarea>
+
                     <button onClick={() => handleStatusChange(upload.id, 'approved')}>Approve</button>
                     <button onClick={() => handleStatusChange(upload.id, 'rejected')}>Reject</button>
                   </>
