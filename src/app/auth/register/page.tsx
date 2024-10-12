@@ -33,7 +33,7 @@ export default function RegisterPage() {
 
   return (
     <div className="upload-container">
-      <h1>Register</h1>
+      <h1>Opret ny bruger</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email</label>
@@ -46,7 +46,7 @@ export default function RegisterPage() {
           />
         </div>
         <div>
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Adgangskode</label>
           <input
             type="password"
             id="password"
@@ -56,7 +56,7 @@ export default function RegisterPage() {
           />
         </div>
         <div>
-          <label htmlFor="confirmPassword">Confirm Password</label>
+          <label htmlFor="confirmPassword">Bekræft adgangskode</label>
           <input
             type="password"
             id="confirmPassword"
@@ -66,7 +66,7 @@ export default function RegisterPage() {
           />
         </div>
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Register</button>
+        <button type="submit">Registrer</button>
       </form>
     </div>
   );

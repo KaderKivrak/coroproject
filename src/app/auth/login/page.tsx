@@ -34,7 +34,7 @@ export default function LoginPage() {
 
   return (
     <div className="upload-container">
-      <h1>Login</h1>
+      <h1>Log ind</h1>
       <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="email">Email</label>
@@ -47,7 +47,7 @@ export default function LoginPage() {
           />
         </div>
         <div>
-          <label htmlFor="password">Password</label>
+          <label htmlFor="password">Adgangskode</label>
           <input
             type="password"
             id="password"
@@ -57,7 +57,7 @@ export default function LoginPage() {
           />
         </div>
         {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit">Login</button>
+        <button type="submit">Log ind</button>
       </form>
     </div>
   );

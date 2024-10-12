@@ -54,15 +54,15 @@ export default function AdminPanelClient({ uploads: initialUploads }: { uploads:
       {message && <p style={{ color: 'green' }}>{message}</p>}
       <ul>
         {uploads.length === 0 ? (
-          <p>No pending uploads</p>
+          <p>Ingen projekter</p>
         ) : (
           uploads.map((upload) => (
             <li key={upload.id}>
               <p>
-              <h1>Admin Panel - Pending Uploads</h1>
-              <strong>Name:</strong> {upload.name}<br />
-                <strong>File Name:</strong> {upload.fileName}<br />
-                <strong>Description:</strong> {upload.description}<br />
+              <h1>Projekter til godkendelse</h1>
+              <strong>Navn:</strong> {upload.name}<br />
+                <strong>Fil:</strong> {upload.fileName}<br />
+                <strong>Beskrivelse:</strong> {upload.description}<br />
                 <strong>Status:</strong> {upload.status}<br />
                 {upload.status === 'pending' && (
                   <>
@@ -77,8 +77,8 @@ export default function AdminPanelClient({ uploads: initialUploads }: { uploads:
                      }
                     ></textarea>
 
-                    <button onClick={() => handleStatusChange(upload.id, 'approved')}>Approve</button>
-                    <button onClick={() => handleStatusChange(upload.id, 'rejected')}>Reject</button>
+                    <button onClick={() => handleStatusChange(upload.id, 'approved')}>Godkend</button>
+                    <button onClick={() => handleStatusChange(upload.id, 'rejected')}>Afvis</button>
                   </>
                 )}
                 {upload.feedback && <p><strong>Feedback:</strong> {upload.feedback}</p>}

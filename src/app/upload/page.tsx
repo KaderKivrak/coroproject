@@ -45,17 +45,11 @@ export default function Upload() {
   return (
     <div className="upload-page">
       <Navbar/>
-      <h1>Upload New File</h1>
-      <div className="button-container">
-        <Link href="/uploads">
-          <button type="button" className="button">Go to Uploads</button>
-        </Link>
-      </div>
-
+      <h1>Upload nyt projekt</h1>
       <div className="upload-container">
         <form onSubmit={handleUpload}>
           <div className="form-group">
-            <label htmlFor="name">Name</label>
+            <label htmlFor="name">Navn</label>
             <input
               type="text"
               id="name"
@@ -65,7 +59,7 @@ export default function Upload() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="description">Description</label>
+            <label htmlFor="description">Beskrivelse</label>
             <input
               type="text"
               id="description"
@@ -75,7 +69,7 @@ export default function Upload() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="company">Company</label>
+            <label htmlFor="company">Virksomhed</label>
             <input
               type="text"
               id="company"
@@ -85,7 +79,7 @@ export default function Upload() {
             />
           </div>
           <div className="form-group">
-            <label htmlFor="file">File</label>
+            <label htmlFor="file">Fil</label>
             <input
               type="file"
               id="file"
@@ -93,9 +87,16 @@ export default function Upload() {
               required
             />
           </div>
-          <button type="submit">Upload</button>
+          <button type="submit">Indsend</button>
         </form>
         {message && <p>{message}</p>}
+      </div>
+      
+      <div className="button-container">
+
+        <Link href="/uploads">
+          <button type="button" className="button">Indsendte projekter</button>
+        </Link>
       </div>
     </div>
   );

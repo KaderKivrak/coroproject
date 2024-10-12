@@ -30,15 +30,15 @@ export default function UserUploads() {
   return (
     <div className="upload-container">
       <Navbar/>
-      <h1>Your Uploads</h1>
+      <h1>Dine projekter</h1>
       {uploads.length === 0 ? (
-        <p>No uploads yet</p>
+        <p>Du har ingen projekter endnu</p>
       ) : (
         <ul>
           {uploads.map((upload) => (
             <li key={upload.id}>
               <p>
-                <strong>File Name:</strong> {upload.fileName}<br />
+                <strong>Fil:</strong> {upload.fileName}<br />
                 <strong>Status:</strong> {upload.status === 'pending' ? 'In Process' : upload.status === 'approved' ? 'Approved' : 'Rejected'}<br />
                 {/* Tilføj feedback hvis det findes */}
                 {upload.feedback && (
