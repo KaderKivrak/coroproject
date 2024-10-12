@@ -32,7 +32,6 @@ export default function AdminPanelClient({ uploads: initialUploads }: { uploads:
     });
 
     if (res.ok) {
-      // Opdater upload-listen dynamisk
       setUploads((prevUploads) =>
         prevUploads.map((upload) =>
           upload.id === id ? { ...upload, status: newStatus, feedback } : upload

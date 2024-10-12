@@ -4,7 +4,6 @@ import AdminPanelClient from './AdminPanelClient'; // Klient-side komponent
 
 
 export default async function AdminUploads() {
-  // Hent alle uploads med status 'pending' på serveren
   const uploads = await prisma.upload.findMany({
     where: { status: 'pending' },
     orderBy: { createdAt: 'desc' },
