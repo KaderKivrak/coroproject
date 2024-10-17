@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import { Navbar } from '../component/navbar';
 
 export default function Upload() {
@@ -10,6 +11,7 @@ export default function Upload() {
   const [description, setDescription] = useState('');
   const [company, setCompany] = useState('');
   const [message, setMessage] = useState('');
+  
 
   // Handle file upload
   const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {

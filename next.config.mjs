@@ -3,7 +3,7 @@
 const nextConfig = {
     reactStrictMode: true,
     experimental: {
-      appDir: true,
+      
     },
     webpack: (config) => {
       return config;

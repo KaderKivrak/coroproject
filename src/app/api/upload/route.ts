@@ -12,12 +12,14 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
   }
 
+  //hent form
   const data = await request.formData();
   const file = data.get('file') as File;
   const name = data.get('name') as string;
   const description = data.get('description') as string;
   const company = data.get('company') as string;
 
+  //hvis et felt mangler
   if (!file || !name || !description || !company) {
     return NextResponse.json({ success: false, message: 'All fields are required' });
   }
@@ -27,7 +29,7 @@ export async function POST(request: NextRequest) {
 
   const filePath = join(process.cwd(), 'public', 'uploads', file.name);
   await mkdir(join(process.cwd(), 'public', 'uploads'), { recursive: true });
-  await writeFile(filePath, buffer);
+  await writeFile(filePath, JSON.stringify(buffer));
 
   const upload = await prisma.upload.create({
     data: {

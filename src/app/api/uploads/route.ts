@@ -7,11 +7,11 @@ export async function GET(request: NextRequest) {
   const session = await getServerSession(authOptions);
 
   if (!session) {
-    return NextResponse.json({ uploads: [] }); // Hvis brugeren ikke er logget ind, returner en tom liste
+    return NextResponse.json({ uploads: [] }); // Hvis ikke logget ind
   }
 
   const uploads = await prisma.upload.findMany({
-    where: { userId: parseInt(session.user.id, 10) }, // Hent uploads baseret på userId
+    where: { userId: parseInt(session.user.id, 10) }, // Hent uploads ud fra userId
     orderBy: { createdAt: 'desc' },
   });
 

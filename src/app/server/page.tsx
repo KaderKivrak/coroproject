@@ -22,7 +22,7 @@ export default function ServerUploadPage() {
         await mkdir(uploadDir, { recursive: true });
 
         const path = join(uploadDir, file.name);
-        await writeFile(path, buffer);
+        await writeFile(path, JSON.stringify(buffer));
         console.log(`open ${path} to see uploaded file`);
 
         return NextResponse.json({ success: true });
