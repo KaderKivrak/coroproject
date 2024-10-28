@@ -1,19 +1,28 @@
 'use client';
 
-import { useState } from 'react';
-import Link from 'next/link';
+import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import Link from 'next/link';
 import { Navbar } from '../component/navbar';
 
 export default function Upload() {
+  const { data: session, status } = useSession();
+  const router = useRouter();
+
   const [file, setFile] = useState<File | null>(null);
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [company, setCompany] = useState('');
   const [message, setMessage] = useState('');
-  
 
-  // Handle file upload
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/login');
+    }
+  }, [status, router]);
+
+
   const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -44,63 +53,70 @@ export default function Upload() {
     }
   };
 
-  return (
-    <div className="upload-page">
-      <Navbar/>
-      <h1>Upload nyt projekt</h1>
-      <div className="upload-container">
-        <form onSubmit={handleUpload}>
-          <div className="form-group">
-            <label htmlFor="name">Navn</label>
-            <input
-              type="text"
-              id="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="description">Beskrivelse</label>
-            <input
-              type="text"
-              id="description"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="company">Virksomhed</label>
-            <input
-              type="text"
-              id="company"
-              value={company}
-              onChange={(e) => setCompany(e.target.value)}
-              required
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="file">Fil</label>
-            <input
-              type="file"
-              id="file"
-              onChange={(e) => setFile(e.target.files?.[0] || null)}
-              required
-            />
-          </div>
-          <button type="submit">Indsend</button>
-        </form>
-        {message && <p>{message}</p>}
-      </div>
-      
-      <div className="button-container">
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
 
-        <Link href="/uploads">
-          <button type="button" className="button">Indsendte projekter</button>
-        </Link>
+
+  if (status === 'authenticated') {
+    return (
+      <div className="upload-page">
+        <Navbar />
+        <h1>Upload nyt projekt</h1>
+        <div className="upload-container">
+          <form onSubmit={handleUpload}>
+            <div className="form-group">
+              <label htmlFor="name">Navn</label>
+              <input
+                type="text"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="description">Beskrivelse</label>
+              <input
+                type="text"
+                id="description"
+                value={description}
+                onChange={(e) => setDescription(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="company">Virksomhed</label>
+              <input
+                type="text"
+                id="company"
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                required
+              />
+            </div>
+            <div className="form-group">
+              <label htmlFor="file">Fil</label>
+              <input
+                type="file"
+                id="file"
+                onChange={(e) => setFile(e.target.files?.[0] || null)}
+                required
+              />
+            </div>
+            <button type="submit">Indsend</button>
+          </form>
+          {message && <p>{message}</p>}
+        </div>
+
+        <div className="button-container">
+          <Link href="/uploads">
+            <button type="button" className="button">Indsendte projekter</button>
+          </Link>
+        </div>
       </div>
-    </div>
-  );
+    );
+  }
+
+  return null;
 }
-

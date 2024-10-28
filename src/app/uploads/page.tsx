@@ -1,6 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { Navbar } from '../component/navbar';
 
 // Definer en type for hver upload
@@ -15,21 +17,36 @@ interface Upload {
 }
 
 export default function UserUploads() {
+  const { data: session, status } = useSession();
+  const router = useRouter(); 
   const [uploads, setUploads] = useState<Upload[]>([]);
 
-  // Hent brugerens uploads ved page load
+
+  useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/auth/login');
+    }
+  }, [status, router]);
+
+  // Hent brugerens uploads
   useEffect(() => {
     async function fetchUploads() {
-      const res = await fetch('/api/uploads');
-      const data = await res.json();
-      setUploads(data.uploads);
+      if (status === 'authenticated') {
+        const res = await fetch('/api/uploads');
+        const data = await res.json();
+        setUploads(data.uploads);
+      }
     }
     fetchUploads();
-  }, []);
+  }, [status]);
+
+  if (status === 'loading') {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div className="upload-container">
-      <Navbar/>
+      <Navbar />
       <h1>Dine projekter</h1>
       {uploads.length === 0 ? (
         <p>Du har ingen projekter endnu</p>
@@ -40,7 +57,6 @@ export default function UserUploads() {
               <p>
                 <strong>Fil:</strong> {upload.fileName}<br />
                 <strong>Status:</strong> {upload.status === 'pending' ? 'In Process' : upload.status === 'approved' ? 'Approved' : 'Rejected'}<br />
-                {/* Tilføj feedback hvis det findes */}
                 {upload.feedback && (
                   <p>
                     <strong>Feedback:</strong> {upload.feedback}
